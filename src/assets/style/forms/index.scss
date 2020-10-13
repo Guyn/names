@@ -1,0 +1,28 @@
+.input {
+	width: 100%;
+
+	padding: 0.5em;
+	input[type='text'],
+	textarea {
+		line-height: 1;
+		padding: 0.5em;
+		font-size: 1em;
+		border-radius: 0.25em;
+		border: 1px solid rgba(0, 0, 0, 0.25);
+		resize: none;
+		width: 100%;
+		margin: 0;
+
+		&:focus {
+			outline: none;
+			border: 1px solid rgba(0, 0, 0, 0.75);
+		}
+	}
+	textarea {
+		//   height: 3em;
+	}
+	font-size: 2em;
+	&--large {
+		font-size: 1em;
+	}
+}

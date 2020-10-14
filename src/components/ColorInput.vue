@@ -15,10 +15,12 @@
 			></textarea>
 		</div>
 		<div class="names__output" v-if="color.valid">
+			{{ state.tileView }}
 			<ColorCard
 				v-for="(color, idx) in color.output"
 				:color="color"
 				:key="idx"
+				:view="tileView"
 			/>
 		</div>
 		<!-- <div class="names__settings">
@@ -55,8 +57,13 @@ export default defineComponent({
 				}
 			})
 		});
+		const tileView = computed(() => {
+			if (color) return color.output.length > 3 ? 'small' : 'medium';
+			else return 'small';
+		});
+		console.log(tileView);
 
-		return { state, color, autoResize };
+		return { state, color, autoResize, tileView };
 	}
 });
 </script>

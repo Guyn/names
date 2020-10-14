@@ -7,6 +7,8 @@ import {
 	findHex
 } from '@guyn/tools';
 
+import { getClosestColor } from '../service/color';
+
 import { Color } from '../types';
 
 export interface ColorState {
@@ -34,19 +36,12 @@ const isJsonString = (str: string): boolean => {
 
 const establishGroupType = (input: string): GroupType => {
 	console.log(input);
-	if (isJsonString(input)) {
-		return 'object';
-	} else if (input.includes('[') && input.includes(']')) {
-		return 'array';
-	} else if (input.includes(', ')) {
-		return 'comma-space';
-	} else if (input.includes(',')) {
-		return 'comma';
-	} else if (input.includes(' ')) {
-		return 'spaced';
-	} else if (/\r|\n/.exec(input)) {
-		return 'break';
-	}
+	if (isJsonString(input)) return 'object';
+	if (input.includes('[') && input.includes(']')) return 'array';
+	if (input.includes(', ')) return 'comma-space';
+	if (input.includes(',')) return 'comma';
+	if (input.includes(' ')) return 'spaced';
+	if (/\r|\n/.exec(input)) return 'break';
 	return 'none';
 };
 
@@ -71,11 +66,8 @@ const splitByGroupType = (input: string): string[] => {
 	}
 };
 
-const convertToColorGroup = (colors: string): Hex[] => {
-	const colorsArray: string[] = splitByGroupType(colors);
-
-	return toHexCharsGroup(colorsArray);
-};
+const convertToColorGroup = (colors: string): Hex[] =>
+	toHexCharsGroup(splitByGroupType(colors));
 
 export default {
 	namespaced: true,
@@ -83,6 +75,7 @@ export default {
 		input: '#222222',
 		output: [
 			{
+				name: 'test',
 				hex: '#222222',
 				rgb: { r: 0, g: 0, b: 0 },
 				hsl: { h: 0, s: 0, l: 0 }
@@ -137,6 +130,7 @@ export default {
 				.filter((c) => c)
 				.forEach((color) =>
 					state.output.push({
+						name: getClosestColor(hexToRgb(color)).name,
 						hex: color,
 						rgb: hexToRgb(color),
 						hsl: hexToHsl(color)

@@ -6,12 +6,14 @@
 		"
 	>
 		<ColorInput />
+		<InfoPanel />
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, computed } from 'vue';
 import ColorInput from '@/components/ColorInput.vue';
+import InfoPanel from '@/components/InfoPanel.vue';
 import store from './store';
 import { Color } from './types';
 
@@ -39,7 +41,8 @@ export default defineComponent({
 		return { state };
 	},
 	components: {
-		ColorInput
+		ColorInput,
+		InfoPanel
 	}
 });
 </script>

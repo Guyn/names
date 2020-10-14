@@ -1,29 +1,35 @@
-// import { Hex, SL } from '@guyn/tools';
-// import nameData from '../data/names.json';
+import Names from '../data/names.json';
+import { RGB, Hex, hexToRgb, getColorDistance } from '@guyn/tools';
 
-// export const hexToHsl = (c: Hex, isArray = false): HSL => {
-// 	const hsl = parseInt(c);
-// 	return { h: 0, s: 0, l: hsl };
-// };
+interface ClosestColor {
+	name: string;
+	color: Hex;
+	distance: number;
+}
 
-// // export const hexToRgb = (c: Hex, isArray = false): RGB => {
-// // 	if (!isHex(c)) return { r: 0, g: 0, b: 0 };
-// // 	const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(c);
-// // 	const rgb = [
-// // 		parseInt(result ? result[1] : '00', 16),
-// // 		parseInt(result ? result[2] : '00', 16),
-// // 		parseInt(result ? result[3] : '00', 16)
-// // 	];
+export const getClosestColor = (input: RGB, source = Names): ClosestColor => {
+	let closest = {
+		name: '',
+		color: '',
+		distance: 999
+	};
 
-// // 	return {
-// // 		r: rgb[0],
-// // 		g: rgb[1],
-// // 		b: rgb[2]
-// // 	};
-// // };
-
-// interface ColorName {
-// 	name: string;
-// 	color: string;
-// 	valid: boolean;
-// }
+	Names.colors
+		.map((c) => {
+			return {
+				...c,
+				rgb: hexToRgb('#' + c.code)
+			};
+		})
+		.forEach((color) => {
+			const distance = getColorDistance(color.rgb, input);
+			if (closest.distance > distance) {
+				closest = {
+					name: color.name,
+					color: '#' + color.code,
+					distance: distance
+				};
+			}
+		});
+	return closest;
+};
